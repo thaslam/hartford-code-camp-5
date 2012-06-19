@@ -1,0 +1,45 @@
+﻿
+<div id="body">
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>Fitness Log</h1>
+                <h2>Track your training workouts and progress over time.</h2>
+            </hgroup>
+        </div>
+    </section>
+     
+    <section class="content-wrapper main-content clear-fix">
+    <ul id="logs" data-bind="foreach: Logs">
+        <li><a data-bind="text: Title, attr:{ href: '/FitnessLog/Log?id=' + LogID }"></a></li>
+    </ul>
+    </section>
+</div>
+
+<script type="text/javascript">
+
+    var viewModel = {
+        Logs: ko.observableArray()
+    };
+
+    function LoadLogsFromServer() {
+        viewModel.Logs([]);
+
+        $.get(
+            '/api/fitnesslogrest', 
+            function (data) {
+                    viewModel.Logs(data);
+                },
+            'json'
+        );
+    }
+
+    $(document).ready(function () {
+        
+        // activate knockout
+        ko.applyBindings(viewModel);
+
+        LoadLogsFromServer();
+    });
+     
+</script>

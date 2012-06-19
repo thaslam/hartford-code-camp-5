@@ -1,0 +1,178 @@
+﻿<div id="body">
+
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1 data-bind="text: Title"></h1>
+            </hgroup>
+        </div>
+    </section> 
+
+    <section class="content-wrapper main-content clear-fix">
+    <table id="log" cellpadding="2" cellspacing="0">
+        <thead>
+        <tr>
+            <th align="left">Excercise</th>
+            <th align="left">Date & Time</th>
+            <th align="right">Lbs</th>
+            <th align="right">Reps</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: Entries">
+        <tr>
+            <th data-bind="text: ExerciseName" align="left"></th>
+            <td data-bind="text: DateAndTime" align="left"></td>
+            <td data-bind="text: Lbs" align="right"></td>
+            <td data-bind="text: Reps" align="right"></td>
+            <td>
+            <button data-bind="click: $parent.editEntry" class="btn"><span><span>Edit</span></span></button>
+            <button data-bind="click: $parent.deleteEntry" class="btn"><span><span>Delete</span></span></button></td>
+        </tr>
+        <tr style="display: none;" data-bind="attr:{id: 'EditRow' + LogEntryID}">
+            <td align="left"><input type="text" data-bind="value: ExerciseName" type="text" style="width: 300px;" /></td>
+            <td align="left"><input type="text" data-bind="value: DateAndTime" style="width: 150px;" /></td>
+            <td align="right"><input type="text" data-bind="value: Lbs" style="width: 50px;" /></td>
+            <td align="right"><input type="text" data-bind="value: Reps" style="width: 50px;" /></td>
+            <td align="left"><button data-bind="click: $parent.updateEntry" class="btn"><span><span>Save</span></span></button></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr><td colspan="5">Add New*</td></tr>
+        <tr id="AddRow">
+            <td align="left"><input id="NewExerciseName" type="text" style="width: 300px;" /></td>
+            <td align="left"><input id="NewDateTime" type="text" style="width: 150px;" /></td>
+            <td align="right"><input id="NewLbs" type="text" style="width: 50px;" /></td>
+            <td align="right"><input id="NewReps" type="text" style="width: 50px;" /></td>
+            <td align="left"><button onclick="addEntry();" class="btn"><span><span><b>Add</b></span></span></button>
+        </tr>
+        </tfoot>
+    </table>    
+    </section>
+
+</div>
+
+<script type="text/javascript">
+    
+    var log = null;
+    var viewModel = {
+        LogID: ko.observable(),
+        Title: ko.observable(),
+        Entries: ko.observableArray(),
+        editEntry: function (entry) { displayEditRow(entry); },
+        updateEntry: function (entry) { updateEntry(entry); },
+        deleteEntry: function (entry) { deleteEntry(entry); }
+    };
+
+    function loadFitnessLog(id) {
+        viewModel.Entries([]);
+
+        $.get(
+            '/api/fitnesslogrest/' + id,
+            function (data) {
+                viewModel.LogID(data.LogID);
+                viewModel.Title(data.Title);
+                viewModel.Entries(data.Entries);
+
+                log = data;
+            },
+            'json'
+        );
+    }
+
+    function displayEditRow(entry) {
+        $("#EditRow" + entry.LogEntryID).show();
+        $(":button[value='Edit']").hide();
+        $(":button[value='Delete']").hide();
+    }
+
+    function updateEntry(entry) {
+        $.ajax({
+            url: "/api/fitnesslogrest",
+            data: JSON.stringify(entry),
+            type: "PUT",
+            contentType: "application/json;charset=utf-8",
+            statusCode: {
+                200: function () {
+                    successUpdateCallback(entry);
+                },
+                404: function () {
+                    alert("Entry not found!");
+                }
+            }
+        });
+    }
+
+    function deleteEntry(entry) {
+        $.ajax({
+            url: "/api/fitnesslogrest",
+            data: JSON.stringify(entry),
+            type: "DELETE",
+            contentType: "application/json;charset=utf-8",
+            statusCode: {
+                200: function () {
+                    successDeleteCallback();
+                },
+                404: function () {
+                    alert("Entry not found!");
+                }
+            }
+        });
+    }
+
+    function addEntry() {
+        var entry = {
+            ExerciseName: $('#NewExerciseName').val(),
+            DateAndTime: $('#NewDateTime').val(),
+            Lbs: $('#NewLbs').val(),
+            Reps: $('#NewReps').val(),
+            Log: log
+        };
+
+        $.ajax({
+            url: "/api/fitnesslogrest",
+            data: JSON.stringify(entry),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            statusCode: {
+                200: function () {
+                    successInsertCallback();
+                }
+            }
+        });
+    }
+
+    function successUpdateCallback(entry) {
+        $("#EditRow" + entry.LogEntryID).hide();
+        $(":button[value='Edit']").show();
+        $(":button[value='Delete']").show();
+
+        loadFitnessLog(@Request.QueryString["id"]);
+    }
+
+    function successDeleteCallback(entry) {
+        
+        loadFitnessLog(@Request.QueryString["id"]);
+    }
+
+    function successInsertCallback() {
+        //viewModel.push(entry);  
+
+        $('#NewExerciseName').val('');
+        $('#NewDateTime').val('');
+        $('#NewLbs').val('');
+        $('#NewReps').val('');
+
+        loadFitnessLog(@Request.QueryString["id"]);
+    }
+
+    $(document).ready(function () {
+
+        // activate knockout
+        ko.applyBindings(viewModel);
+
+        // load data
+        loadFitnessLog(@Request.QueryString["id"]);
+    });
+     
+</script>
