@@ -25,13 +25,19 @@ namespace FitnessLog.WebApi.Controllers
 
         // GET /api/fitnesslogapi/5
         [TracingFilter]
-        public Models.Log Get(int id)
+        [Authorize(Users = "Haslam-PC\\Tom")]
+        public HttpResponseMessage<Models.Log> Get(int id)
         {
-            return Repository.GetFitnessLog(id);
-            throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
+            var log = Repository.GetFitnessLog(id);
+            return new HttpResponseMessage<Models.Log>(
+                log, 
+                log != null ? 
+                System.Net.HttpStatusCode.OK : 
+                System.Net.HttpStatusCode.NotFound);
         }
 
         // POST /api/fitnesslogapi
+        [ValidationFilter]
         public HttpResponseMessage Post(Models.LogEntry entry)
         {
             Repository.AddLog(entry);

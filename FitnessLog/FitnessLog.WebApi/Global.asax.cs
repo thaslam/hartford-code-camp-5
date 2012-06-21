@@ -8,6 +8,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using FitnessLog.WebApi.MediaTypes;
 using FitnessLog.WebApi.MessageHandlers;
+using System.Data.Entity;
 
 namespace FitnessLog.WebApi
 {
