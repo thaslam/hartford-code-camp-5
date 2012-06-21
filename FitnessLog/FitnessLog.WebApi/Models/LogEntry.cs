@@ -13,8 +13,10 @@ namespace FitnessLog.WebApi.Models
             Set = 1; // default set to 1
         }
 
+        
         public int LogEntryID { get; set; }
         public string DateAndTime { get; set; }
+        [Required]
         public string ExerciseName { get; set; }
         public int Lbs { get; set; }
         public int Reps { get; set; }

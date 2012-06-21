@@ -47,6 +47,7 @@ namespace FitnessLog.WebApi.Controllers
         }
 
         // POST /api/fitnesslogrest
+        [ValidationFilter]
         public HttpResponseMessage Post(Models.LogEntry entry)
         {
             using (var fitnessLog = new Models.FitnessLog())
