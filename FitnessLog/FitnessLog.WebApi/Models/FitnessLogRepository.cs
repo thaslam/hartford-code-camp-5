@@ -19,8 +19,8 @@ namespace FitnessLog.WebApi.Models
 
         public Log GetFitnessLog(int id)
         {
-            Models.Log log = null;
-            using (var fitnessLog = new Models.FitnessLog())
+            Log log = null;
+            using (var fitnessLog = new FitnessLog())
             {
                 log = fitnessLog.Logs.Include("Entries").FirstOrDefault(l => l.LogID == id);
             }
@@ -33,8 +33,8 @@ namespace FitnessLog.WebApi.Models
                     LogID = log.LogID,
                     Title = log.Title,
                     Username = log.Username,
-                    Entries = new List<Models.LogEntry>
-                       (log.Entries.Select(e => new Models.LogEntry() { DateAndTime = e.DateAndTime, ExerciseName = e.ExerciseName, Lbs = e.Lbs, LogEntryID = e.LogEntryID, Reps = e.Reps, Set = e.Set })),
+                    Entries = new List<LogEntry>
+                       (log.Entries.Select(e => new LogEntry() { DateAndTime = e.DateAndTime, ExerciseName = e.ExerciseName, Lbs = e.Lbs, LogEntryID = e.LogEntryID, Reps = e.Reps, Set = e.Set })),
                 };
 
             return null;
@@ -42,7 +42,7 @@ namespace FitnessLog.WebApi.Models
 
         public Log AddLog(LogEntry entry)
         {
-            using (var fitnessLog = new Models.FitnessLog())
+            using (var fitnessLog = new FitnessLog())
             {
                 var log = fitnessLog.Logs.Find(entry.Log.LogID);
 
@@ -87,7 +87,7 @@ namespace FitnessLog.WebApi.Models
 
         public void DeleteLog(LogEntry entry)
         {
-            using (var fitnessLog = new Models.FitnessLog())
+            using (var fitnessLog = new FitnessLog())
             {
                 var log =
                      fitnessLog.Logs.Include("Entries")

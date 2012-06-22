@@ -19,7 +19,7 @@ namespace FitnessLog.WebApi.MessageHandlers
         }
 
         /// <summary>
-        /// Interecept the sending of request to the next handler.  Here was
+        /// Intercept the sending of request to the next handler.  Here was
         /// invoke the checking for a valid key.  If exists then we pass message
         /// down the pipeline, otherwise we stop execution.
         /// </summary>

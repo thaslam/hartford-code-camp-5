@@ -53,8 +53,8 @@ namespace FitnessLog.WebApi
         // This method contains all the web api configuration
         public static void ConfigureApis(HttpConfiguration config)
         {
-            var formatter = new TheHartfordMediaFormatter();
-            formatter.MediaTypeMappings.Add(new TheHartfordMediaType());
+            var formatter = new CodeCampMediaFormatter();
+            formatter.MediaTypeMappings.Add(new CodeCampMediaType());
 
             config.Formatters.Add(formatter);
 

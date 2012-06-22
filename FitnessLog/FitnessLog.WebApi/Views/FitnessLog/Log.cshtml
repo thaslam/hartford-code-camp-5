@@ -26,7 +26,7 @@
             <td data-bind="text: Lbs" align="right"></td>
             <td data-bind="text: Reps" align="right"></td>
             <td>
-            <button data-bind="click: $parent.editEntry" class="btn"><span><span>Edit</span></span></button>
+            <button data-bind="click: $parent.editEntry" class="btn"><span><span>Edit</span></span></button>&nbsp;
             <button data-bind="click: $parent.deleteEntry" class="btn"><span><span>Delete</span></span></button></td>
         </tr>
         <tr style="display: none;" data-bind="attr:{id: 'EditRow' + LogEntryID}">
@@ -52,127 +52,17 @@
 
 </div>
 
-<script type="text/javascript">
+@section Scripts {
     
-    var log = null;
-    var viewModel = {
-        LogID: ko.observable(),
-        Title: ko.observable(),
-        Entries: ko.observableArray(),
-        editEntry: function (entry) { displayEditRow(entry); },
-        updateEntry: function (entry) { updateEntry(entry); },
-        deleteEntry: function (entry) { deleteEntry(entry); }
-    };
-
-    function loadFitnessLog(id) {
-        viewModel.Entries([]);
-
-        $.get(
-            '/api/fitnesslogrest/' + id,
-            function (data) {
-                viewModel.LogID(data.LogID);
-                viewModel.Title(data.Title);
-                viewModel.Entries(data.Entries);
-
-                log = data;
-            },
-            'json'
-        );
-    }
-
-    function displayEditRow(entry) {
-        $("#EditRow" + entry.LogEntryID).show();
-        $(":button[value='Edit']").hide();
-        $(":button[value='Delete']").hide();
-    }
-
-    function updateEntry(entry) {
-        $.ajax({
-            url: "/api/fitnesslogrest",
-            data: JSON.stringify(entry),
-            type: "PUT",
-            contentType: "application/json;charset=utf-8",
-            statusCode: {
-                200: function () {
-                    successUpdateCallback(entry);
-                },
-                404: function () {
-                    alert("Entry not found!");
-                }
-            }
-        });
-    }
-
-    function deleteEntry(entry) {
-        $.ajax({
-            url: "/api/fitnesslogrest",
-            data: JSON.stringify(entry),
-            type: "DELETE",
-            contentType: "application/json;charset=utf-8",
-            statusCode: {
-                200: function () {
-                    successDeleteCallback();
-                },
-                404: function () {
-                    alert("Entry not found!");
-                }
-            }
-        });
-    }
-
-    function addEntry() {
-        var entry = {
-            ExerciseName: $('#NewExerciseName').val(),
-            DateAndTime: $('#NewDateTime').val(),
-            Lbs: $('#NewLbs').val(),
-            Reps: $('#NewReps').val(),
-            Log: log
+    <script type="text/javascript">
+        // collect request information to be shared throughout js files
+        // razor not allowed in external javascript file, could use NuGet pacakage RazorJS
+        var request = {
+            id: @Request.QueryString["id"]
         };
 
-        $.ajax({
-            url: "/api/fitnesslogrest",
-            data: JSON.stringify(entry),
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            statusCode: {
-                200: function () {
-                    successInsertCallback();
-                }
-            }
-        });
-    }
+    </script>
 
-    function successUpdateCallback(entry) {
-        $("#EditRow" + entry.LogEntryID).hide();
-        $(":button[value='Edit']").show();
-        $(":button[value='Delete']").show();
+    <script src="@Url.Content("~/Scripts/web-api-client-crud.js")"></script>
+}
 
-        loadFitnessLog(@Request.QueryString["id"]);
-    }
-
-    function successDeleteCallback(entry) {
-        
-        loadFitnessLog(@Request.QueryString["id"]);
-    }
-
-    function successInsertCallback() {
-        //viewModel.push(entry);  
-
-        $('#NewExerciseName').val('');
-        $('#NewDateTime').val('');
-        $('#NewLbs').val('');
-        $('#NewReps').val('');
-
-        loadFitnessLog(@Request.QueryString["id"]);
-    }
-
-    $(document).ready(function () {
-
-        // activate knockout
-        ko.applyBindings(viewModel);
-
-        // load data
-        loadFitnessLog(@Request.QueryString["id"]);
-    });
-     
-</script>

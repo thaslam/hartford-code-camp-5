@@ -76,6 +76,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\AspNetWebPages.Core.2.0.20126.16343\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -126,17 +127,25 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionFilters\ValidationFilter.cs" />
     <Compile Include="ActionFilters\TracingFilter.cs" />
     <Compile Include="Controllers\FitnessLogController.cs" />
-    <Compile Include="Controllers\FitnessLogRestController.cs" />
+    <Compile Include="Controllers\FitnessLogApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="MediaTypes\TheHartfordMediaFormatter.cs" />
-    <Compile Include="MediaTypes\TheHartfordMediaType.cs" />
+    <Compile Include="MediaTypes\CodeCampMediaFormatter.cs" />
+    <Compile Include="MediaTypes\CodeCampMediaType.cs" />
     <Compile Include="MessageHandlers\ApiKeyHandler.cs" />
+    <Compile Include="Migrations\201205300212576_InitialCreate.cs" />
+    <Compile Include="Migrations\201205300212576_InitialCreate.Designer.cs">
+      <DependentUpon>201205300212576_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FitnessLog.cs" />
+    <Compile Include="Models\FitnessLogRepository.cs" />
+    <Compile Include="Models\IFitnessLogRepository.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -187,6 +196,8 @@
     <Content Include="Scripts\knockout-2.0.0.debug.js" />
     <Content Include="Scripts\knockout-2.0.0.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
+    <Content Include="Scripts\web-api-client-crud.js" />
+    <Content Include="Scripts\web-api-client-get.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

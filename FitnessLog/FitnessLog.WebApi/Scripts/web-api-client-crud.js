@@ -94,9 +94,11 @@ function addEntry() {
             200: function () {
                 successInsertCallback();
             },
-            400: function (errors) {
-                alert(errors);
-            }
+            400 /* BadRequest */: function (jqxhr) { 
+                var validationResult = $.parseJSON(jqxhr.responseText);       
+                alert(validationResult.ExerciseName);
+                //$.validator.unobtrusive.revalidate(form, validationResult); 
+            } 
         }
     });
 }

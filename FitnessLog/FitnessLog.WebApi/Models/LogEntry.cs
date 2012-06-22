@@ -16,7 +16,7 @@ namespace FitnessLog.WebApi.Models
         
         public int LogEntryID { get; set; }
         public string DateAndTime { get; set; }
-        [Required]
+        [MaxLength(50)]
         public string ExerciseName { get; set; }
         public int Lbs { get; set; }
         public int Reps { get; set; }

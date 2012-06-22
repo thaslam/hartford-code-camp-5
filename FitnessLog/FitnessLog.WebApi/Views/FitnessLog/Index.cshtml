@@ -16,30 +16,6 @@
     </section>
 </div>
 
-<script type="text/javascript">
-
-    var viewModel = {
-        Logs: ko.observableArray()
-    };
-
-    function LoadLogsFromServer() {
-        viewModel.Logs([]);
-
-        $.get(
-            '/api/fitnesslogrest', 
-            function (data) {
-                    viewModel.Logs(data);
-                },
-            'json'
-        );
-    }
-
-    $(document).ready(function () {
-        
-        // activate knockout
-        ko.applyBindings(viewModel);
-
-        LoadLogsFromServer();
-    });
-     
-</script>
+@section Scripts {
+    <script src="@Url.Content("~/Scripts/web-api-client-get.js")"></script>
+}

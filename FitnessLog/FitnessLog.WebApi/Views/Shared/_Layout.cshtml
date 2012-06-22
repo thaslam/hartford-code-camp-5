@@ -9,6 +9,8 @@
     <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/js")"></script>
     <script src="@Url.Content("~/Scripts/knockout-2.0.0.debug.js")"></script>
     <script src="@Url.Content("~/Scripts/json2.js")"></script>
+
+    @RenderSection("Scripts")
 </head>
 <body>
     @RenderBody()
