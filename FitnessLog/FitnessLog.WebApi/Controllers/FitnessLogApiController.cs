@@ -27,7 +27,6 @@ namespace FitnessLog.WebApi.Controllers
         // GET /api/fitnesslogapi/5
         [TracingFilter]
         [Authorize(Users = "Haslam-PC\\Tom")]
-        //[Authorize(Users = "ad1\\th72590")]
         public HttpResponseMessage<Log> Get(int id)
         {
             var log = Repository.GetFitnessLog(id);

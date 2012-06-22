@@ -29,6 +29,7 @@ namespace FitnessLog.WebApi.MessageHandlers
         protected override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            //request.Method = HttpMethod.Get;
             if (!ValidateKey(request))
             {
                 return Task<HttpResponseMessage>.Factory.StartNew(() =>
