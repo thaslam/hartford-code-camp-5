@@ -94,10 +94,9 @@ function addEntry() {
             200: function () {
                 successInsertCallback();
             },
-            400 /* BadRequest */: function (jqxhr) { 
+            400: function (jqxhr) { 
                 var validationResult = $.parseJSON(jqxhr.responseText);       
                 alert(validationResult.ExerciseName);
-                //$.validator.unobtrusive.revalidate(form, validationResult); 
             } 
         }
     });

@@ -8,12 +8,12 @@ function LoadLogsFromServer() {
     //'/api/fitnesslogapi?key=dotnet', 
 
     $.get(
-                '/api/fitnesslogapi',
-                function (data) {
-                    viewModel.Logs(data);
-                },
-                'json'
-            );
+        '/api/fitnesslogapi',
+        function (data) {
+            viewModel.Logs(data);
+        },
+        'json'
+    );
 }
 
 $(document).ready(function () {
